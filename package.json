@@ -1,25 +1,29 @@
 {
   "name": "projetointegrador_uc13",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "type": "module",
+  "main": "src/api.js",
   "scripts": {
+    "dev": "nodemon src/api.js",
+    "build": "tsc",
+    "start": "node src/api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/agbram/projetoIntegrador_uc13.git"
-  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/agbram/projetoIntegrador_uc13/issues"
-  },
-  "homepage": "https://github.com/agbram/projetoIntegrador_uc13#readme",
-  "description": "",
-  "devDependencies": {
-    "prisma": "^6.16.3"
-  },
   "dependencies": {
-    "@prisma/client": "^6.16.3"
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "cros": "^1.1.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.6",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
