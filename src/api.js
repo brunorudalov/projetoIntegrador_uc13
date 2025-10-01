@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRoutes);
+app.use("/fixedexpense", fixedexpenseRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error(err);

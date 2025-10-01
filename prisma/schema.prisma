@@ -35,7 +35,7 @@ model Category {
 
   @@map("categories")
 }
-
+//Bruno
 model Product {
   id              Int          @id @default(autoincrement())
   name            String
@@ -97,7 +97,7 @@ model OrderItem {
 
   @@map("order_items")
 }
-
+//-----Bruno------
 model FixedExpense {
   id          Int      @id @default(autoincrement())
   description String
@@ -118,7 +118,6 @@ model SupplyPurchase {
   supplier      String?
   purchaseDate  DateTime     @default(now())
   paymentMethod String?
-  total         Float?
   note          String?
 
   createdAt     DateTime     @default(now())
