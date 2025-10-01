@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id          Int       @id @default(autoincrement())
+  name        String
+  cnpj        String    @unique
+  contact     String?
+  email       String?
+  address     String?
+  note        String?
+  modality    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  orders      Order[]
+
+  @@map("customers")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id              Int          @id @default(autoincrement())
+  name            String
+  description     String?
+  categoryId      Int
+  category        Category    @relation(fields: [categoryId], references: [id])
+
+  costPrice       Float        @default(0)
+  markupPercent   Float        @default(0)
+  salePrice       Float        @default(0)
+  stockQuantity   Int          @default(0)
+  isActive        Boolean      @default(true)
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  orderItems      OrderItem[]
+  purchaseItems   PurchaseItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id            Int          @id @default(autoincrement())
+  customerId    Int
+  customer      Customer     @relation(fields: [customerId], references: [id])
+
+  userId        Int?
+  user          User?        @relation(fields: [userId], references: [id])
+
+  orderDate     DateTime     @default(now())
+  deliveryDate  DateTime?
+  status        String       @default("PENDING")
+  notes         String?
+  total         Float?
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  items         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id            Int      @id @default(autoincrement())
+  orderId       Int
+  order         Order    @relation(fields: [orderId], references: [id])
+
+  productId     Int
+  product       Product  @relation(fields: [productId], references: [id])
+
+  quantity      Int      @default(1)
+  unitPrice     Float
+  subtotal      Float
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("order_items")
+}
+
+model FixedExpense {
+  id          Int      @id @default(autoincrement())
+  description String
+  value       Float
+  date        DateTime @default(now())
+  recurring   Boolean  @default(false)
+  category    String?
+  note        String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("fixed_expenses")
+}
+
+model SupplyPurchase {
+  id            Int          @id @default(autoincrement())
+  supplier      String?
+  purchaseDate  DateTime     @default(now())
+  paymentMethod String?
+  total         Float?
+  note          String?
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  items         PurchaseItem[]
+
+  @@map("supply_purchases")
+}
+
+model PurchaseItem {
+  id            Int          @id @default(autoincrement())
+  purchaseId    Int
+  purchase      SupplyPurchase @relation(fields: [purchaseId], references: [id])
+
+  productId     Int?
+  product       Product?     @relation(fields: [productId], references: [id])
+
+  description   String
+  quantity      Int          @default(1)
+  unitPrice     Float
+  subtotal      Float?
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("purchase_items")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  email       String   @unique
+  password    String
+  phone       String?
+  permission  Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orders      Order[]
+
+  @@map("users")
+}
